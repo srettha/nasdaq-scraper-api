@@ -8,7 +8,7 @@ const { scapeWebsite } = require('../services');
 const getNasdaq = async (req, res, next) => {
     try {
         let filterFrom = req.query.filterFrom || moment().format('YYYY-MM-DD');
-        let filterTo = req.query.filterFrom || moment().add(1, 'd').format('YYYY-MM-DD');
+        let filterTo = req.query.filterTo || moment(filterFrom).add(1, 'd').format('YYYY-MM-DD');
         let stocks = await Model.stock.findAll({
             order: [['id', 'DESC']],
             where: { createdAt: { $between: [filterFrom, filterTo] } },
