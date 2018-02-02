@@ -1,0 +1,5 @@
+.DS_STORE
+.vscode
+.editorconfig
+.env
+src/server/node_modules
