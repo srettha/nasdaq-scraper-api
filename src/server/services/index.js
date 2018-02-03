@@ -2,7 +2,7 @@
 
 const Xray = require('x-ray');
 const phantom = require('x-ray-phantom');
-const x = Xray().driver(phantom({ webSecurity: false }));
+const x = Xray().driver(phantom({ webSecurity: false, weak: false }));
 
 const scrapeWebsite = () => {
     return new Promise((resolve, reject) => {
