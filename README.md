@@ -12,6 +12,10 @@ cp .env-sample .env
 ```
 
 ## Migration guide
+* Navigate to `db` folder
+```bash
+mysql> source ~/nasdaq-scraper-api/db/init_db.sql
+```
 * Navigate to `server` folder inside `src`
 ```javasript
 npm run migrate
@@ -29,7 +33,7 @@ npm test
 ```
 
 ## Cron guide
-* Cron will run every minute from 21:30 until 04:00 Asia/Bangkok
+* Cron will run every minute from 9:30 until 16:00 America/New_York
 * This can be reconfigure in `scheduler.sh`
 * Make `scheduler` executable
 ```bash
