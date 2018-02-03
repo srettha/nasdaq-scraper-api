@@ -4,6 +4,14 @@ Assignment from TDA to scrape `http://www.nasdaq.com` for its stock
 
 *** In order to crawl `http://www.nasdaq.com` periodically use `cron`, checkout `Cron guide` ***
 
+## Demo
+* http://128.199.251.234:3000/api-docs for swagger
+
+
+## Remark
+* When running `puppeteer` on Linux machine, Make sure all the necessary dependencies are installed. 
+* [Troubleshooting](https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md#chrome-headless-doesnt-launch) from `puppeteer`
+
 ## Environment guide
 * Navigate to `src` folder
 * Copy `.env-sample` to create environment file
@@ -14,12 +22,13 @@ cp .env-sample .env
 ## Migration guide
 * Navigate to `db` folder
 ```bash
-mysql> source ~/nasdaq-scraper-api/db/init_db.sql
+mysql -u your_username -p < init_db.sql
 ```
 * Navigate to `server` folder inside `src`
 ```javasript
 npm run migrate
 ```
+
 ## Installation guide
 * Navigate to `server` folder inside `src`
 ```javasript
