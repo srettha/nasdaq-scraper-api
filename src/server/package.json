@@ -7,7 +7,8 @@
     "start": "nodemon app.js",
     "lint": "./node_modules/.bin/eslint ./ --ext .js",
     "precommit": "echo 'Pre-commit checks...' && npm run lint -q",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "export NODE_ENV=test && npm run migrate && ./node_modules/mocha/bin/_mocha --timeout 12000 --exit test/**/*.test.js",
+    "migrate": "./node_modules/.bin/sequelize db:migrate"
   },
   "repository": {
     "type": "git",

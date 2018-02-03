@@ -1,2 +1,4 @@
 CREATE DATABASE IF NOT EXISTS nasdaq;
 GRANT ALL PRIVILEGES on nasdaq.* TO 'nasdaq'@'%' IDENTIFIED BY 'nasdaq' WITH GRANT OPTION;
+CREATE DATABASE IF NOT EXISTS nasdaq-test;
+GRANT ALL PRIVILEGES on nasdaq-test.* TO 'nasdaq-test'@'%' IDENTIFIED BY 'nasdaq-test' WITH GRANT OPTION;

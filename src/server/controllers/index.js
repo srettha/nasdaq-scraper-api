@@ -3,7 +3,7 @@
 const moment = require('moment');
 const httpStatus = require('http-status');
 const Model = require('../models');
-const { scapeWebsite } = require('../services');
+const { scrapeWebsite } = require('../services');
 
 const getNasdaq = async (req, res, next) => {
     try {
@@ -12,9 +12,12 @@ const getNasdaq = async (req, res, next) => {
         let stocks = await Model.stock.findAll({
             order: [['id', 'DESC']],
             where: { createdAt: { $between: [filterFrom, filterTo] } },
-            attributes: ['index', 'value', 'status', 'changeInNet', 'changeInPercentage']
+            attributes: ['index', 'value', 'isPositive', 'changeInNet', 'changeInPercentage']
         });
-        res.status(httpStatus.OK).json({ message: `Successfully retreived Nasdaq stock's price from ${filterFrom} to ${filterTo}`, stocks: stocks });
+        res.status(httpStatus.OK).json({
+            message: `Successfully retreived Nasdaq stock's price from ${filterFrom} to ${filterTo}`,
+            stocks: stocks
+        });
     } catch (err) {
         next(err);
     }
@@ -22,8 +25,17 @@ const getNasdaq = async (req, res, next) => {
 
 const scapeNasdaq = async (req, res, next) => {
     try {
-        let stock = await Model.stock.create(await scapeWebsite());
-        res.status(httpStatus.OK).json({ message: `Successfully scraped Nasdaq website`, stock: stock });
+        let stock = await Model.stock.create(await scrapeWebsite());
+        res.status(httpStatus.OK).json({
+            message: `Successfully scraped Nasdaq website`,
+            stock: {
+                index: stock.index,
+                value: stock.value,
+                isPositive: stock.isPositive,
+                changeInNet: stock.changeInNet,
+                changeInPercentage: stock.changeInPercentage
+            }
+        });
     } catch (err) {
         next(err);
     }

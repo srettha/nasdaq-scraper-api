@@ -14,8 +14,9 @@ module.exports = {
             value: {
                 type: Sequelize.FLOAT
             },
-            status: {
-                type: Sequelize.ENUM('positive', 'negative')
+            isPositive: {
+                type: Sequelize.BOOLEAN,
+                defaultValue: 0
             },
             changeInNet: {
                 type: Sequelize.FLOAT

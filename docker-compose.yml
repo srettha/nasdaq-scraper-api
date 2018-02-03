@@ -1,0 +1,19 @@
+version: '3'
+services:
+  nasdaq-db:
+    build: ./db
+    container_name: nasdaq-db
+    restart: always
+    ports:
+      - 3306:3306
+  nasdaq-api:
+    build: ./src
+    container_name: nasdaq-api
+    restart: always
+    ports:
+      - 3000:3000
+    depends_on:
+      - nasdaq-db
+    links:
+      - nasdaq-db
+    env_file: ./src/.env
