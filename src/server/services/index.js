@@ -5,7 +5,7 @@ const puppeteer = require('puppeteer');
 
 const scrapeWebsite = async () => {
     try {
-        const browser = await puppeteer.launch();
+        const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
         const page = await browser.newPage();
         await page.goto('http://www.nasdaq.com', {
             waitUntil: 'domcontentloaded',
