@@ -1,34 +1,25 @@
 'use strict';
 
-const cheerio = require('cheerio');
-const puppeteer = require('puppeteer');
+const Xray = require('x-ray');
+const phantom = require('x-ray-phantom');
+const x = Xray().driver(phantom({ webSecurity: false }));
 
-const scrapeWebsite = async () => {
-    try {
-        const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
-        const page = await browser.newPage();
-        await page.goto('http://www.nasdaq.com', {
-            waitUntil: 'domcontentloaded',
-            timeout: 60000
+const scrapeWebsite = () => {
+    return new Promise((resolve, reject) => {
+        x('http://www.nasdaq.com/', ['table#indexTable tbody tr#indexTableRow0 td'])((err, obj) => {
+            if (err) {
+                return reject(err);
+            }
+            let changes = obj[2].split(' ');
+            resolve({
+                index: obj[0],
+                value: parseFloat(obj[1]),
+                isPositive: changes[1] === '▲' ? Boolean(1) : Boolean(0),
+                changeInNet: parseFloat(changes[0]),
+                changeInPercentage: parseFloat(changes[2].replace('%', ''))
+            });
         });
-
-        const body = await page.content();
-        const $ = cheerio.load(body);
-        await browser.close();
-        let index = $('#indexTableRow0').eq(0).find('td').eq(0).text();
-        let value = $('#indexTableRow0').eq(0).find('td').eq(1).text();
-        let changes = $('#indexTableRow0').eq(0).find('td').eq(2).text().split(' ');
-        let stock = {
-            index: index,
-            value: parseFloat(value),
-            isPositive: changes[1] === '▲' ? Boolean(1) : Boolean(0),
-            changeInNet: parseFloat(changes[0]),
-            changeInPercentage: parseFloat(changes[2].replace('%', ''))
-        };
-        return stock;
-    } catch (err) {
-        throw new Error(err);
-    }
+    });
 };
 
 module.exports = {

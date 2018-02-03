@@ -34,7 +34,39 @@ describe('route: nasdaq', () => {
     });
 
     describe('GET /nasdaq', () => {
-        it(`should response with nasdaq's stock model`, (done) => {
+        it(`should response with nasdaq's stock model (no-query)`, (done) => {
+            chai.request(server).get('/nasdaq').end((err, res) => {
+                // error should not exist
+                should.not.exist(err);
+                // res with 200 status
+                res.status.should.equal(200);
+                // res should be json
+                res.type.should.equal('application/json');
+                // res message should be
+                res.body.message.should.equal(`Successfully retreived Nasdaq stock's price from ${moment().format('YYYY-MM-DD')} to ${moment().add(1, 'd').format('YYYY-MM-DD')}`);
+                // res body should contain categories information
+                res.body.stocks.should.be.an('array');
+                done();
+            });
+        });
+        it(`should response with nasdaq's stock model (filterFrom query)`, (done) => {
+            chai.request(server).get('/nasdaq').query({
+                fiterFrom: moment().format('YYYY-MM-DD')
+            }).end((err, res) => {
+                // error should not exist
+                should.not.exist(err);
+                // res with 200 status
+                res.status.should.equal(200);
+                // res should be json
+                res.type.should.equal('application/json');
+                // res message should be
+                res.body.message.should.equal(`Successfully retreived Nasdaq stock's price from ${moment().format('YYYY-MM-DD')} to ${moment().add(1, 'd').format('YYYY-MM-DD')}`);
+                // res body should contain categories information
+                res.body.stocks.should.be.an('array');
+                done();
+            });
+        });
+        it(`should response with nasdaq's stock model (filterFrom and filterTo query)`, (done) => {
             chai.request(server).get('/nasdaq').query({
                 fiterFrom: moment().format('YYYY-MM-DD'),
                 filterTo: moment().add(1, 'd').format('YYYY-MM-DD')

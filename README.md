@@ -7,11 +7,6 @@ Assignment from TDA to scrape `http://www.nasdaq.com` for its stock
 ## Demo
 * http://128.199.251.234:3000/api-docs for swagger
 
-
-## Remark
-* When running `puppeteer` on Linux machine, Make sure all the necessary dependencies are installed. 
-* [Troubleshooting](https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md#chrome-headless-doesnt-launch) from `puppeteer`
-
 ## Environment guide
 * Navigate to `src` folder
 * Copy `.env-sample` to create environment file
