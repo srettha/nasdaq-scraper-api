@@ -6,7 +6,7 @@ const x = Xray().driver(phantom({ webSecurity: false }));
 
 const scrapeWebsite = () => {
     return new Promise((resolve, reject) => {
-        x('http://www.nasdaq.com/', ['table#indexTable tbody tr#indexTableRow0 td'])((err, obj) => {
+        x(process.env.NASDAQ_URL, ['table#indexTable tbody tr#indexTableRow0 td'])((err, obj) => {
             if (err) {
                 return reject(err);
             }
