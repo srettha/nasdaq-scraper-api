@@ -200,7 +200,7 @@
         "no-this-before-super": "error",
         "no-useless-constructor": "error",
         "no-var": "error",
-        "object-shorthand": ["error", "consistent"],
+        "object-shorthand": ["error", "methods"],
         "prefer-arrow-callback": "error",
         /** "prefer-const": "error", */
         "prefer-reflect": "off",

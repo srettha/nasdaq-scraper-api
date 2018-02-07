@@ -16,6 +16,7 @@ describe('service: nasdaq', () => {
                 stock.isPositive.should.be.a('boolean');
                 stock.changeInNet.should.be.a('number');
                 stock.changeInPercentage.should.be.a('number');
+                stock.date.should.be.a('string');
                 done();
             }).catch((err) => {
                 should.not.exist(err);

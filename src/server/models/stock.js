@@ -1,5 +1,7 @@
 'use strict';
 
+const moment = require('moment');
+
 module.exports = (sequelize, DataTypes) => {
     const Stock = sequelize.define('Stock', {
         index: DataTypes.STRING,
@@ -10,7 +12,20 @@ module.exports = (sequelize, DataTypes) => {
         },
         changeInNet: DataTypes.FLOAT,
         changeInPercentage: DataTypes.FLOAT,
-        date: DataTypes.DATEONLY
+        date: {
+            type: DataTypes.DATE,
+            get () {
+                return moment(this.getDataValue('date')).format('YYYY-MM-DD HH:mm:ss');
+            }
+        },
+        createdAt: {
+            type: DataTypes.DATE,
+            defaultValue: moment.tz('America/New_York').format('YYYY-MM-DD HH:mm:ss')
+        },
+        updatedAt: {
+            type: DataTypes.DATE,
+            defaultValue: moment.tz('America/New_York').format('YYYY-MM-DD HH:mm:ss')
+        }
     }, {
         tableName: 'stock'
     });

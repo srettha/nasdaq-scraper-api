@@ -9,7 +9,7 @@ const { scrapeWebsite } = require('../services');
 const getNasdaq = async (req, res, next) => {
     try {
         let filterFrom = req.query.filterFrom || moment().format('YYYY-MM-DD');
-        let filterTo = req.query.filterTo || moment(filterFrom).add(1, 'd').format('YYYY-MM-DD');
+        let filterTo = req.query.filterTo ? moment(req.query.filterTo).add(1, 'd').format('YYYY-MM-DD') : moment(filterFrom).add(1, 'd').format('YYYY-MM-DD');
         let stocks = await Stock.findAll({
             order: [['id', 'DESC']],
             where: {
@@ -25,10 +25,11 @@ const getNasdaq = async (req, res, next) => {
                         }
                     }
                 ]
-            }
+            },
+            attributes: ['index', 'value', 'isPositive', 'changeInNet', 'changeInPercentage', 'date']
         });
         res.status(httpStatus.OK).json({
-            message: `Successfully retreived Nasdaq stock's price`,
+            message: `Successfully retreived Nasdaq stock's price from ${filterFrom} to ${filterTo}`,
             stocks: stocks
         });
     } catch (err) {

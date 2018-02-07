@@ -1,6 +1,7 @@
 'use strict';
 
 const Xray = require('x-ray');
+const moment = require('moment');
 const phantom = require('x-ray-phantom');
 const x = Xray().driver(phantom({ webSecurity: false, weak: false }));
 
@@ -20,7 +21,7 @@ const scrapeWebsite = () => {
                 isPositive: changes[1] === '▲' ? Boolean(1) : Boolean(0),
                 changeInNet: parseFloat(changes[0]),
                 changeInPercentage: parseFloat(changes[2].replace('%', '')),
-                date: obj.date
+                date: moment.tz('America/New_York').format('YYYY-MM-DD HH:mm:ss')
             });
         });
     });

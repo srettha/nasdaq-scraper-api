@@ -28,6 +28,7 @@ describe('route: nasdaq', () => {
                 res.body.stock.isPositive.should.be.a('boolean');
                 res.body.stock.changeInNet.should.be.a('number');
                 res.body.stock.changeInPercentage.should.be.a('number');
+                res.body.stock.date.should.be.a('string');
                 done();
             });
         });
@@ -78,7 +79,7 @@ describe('route: nasdaq', () => {
                 // res should be json
                 res.type.should.equal('application/json');
                 // res message should be
-                res.body.message.should.equal(`Successfully retreived Nasdaq stock's price from ${moment().format('YYYY-MM-DD')} to ${moment().add(1, 'd').format('YYYY-MM-DD')}`);
+                res.body.message.should.equal(`Successfully retreived Nasdaq stock's price from ${moment().format('YYYY-MM-DD')} to ${moment().add(2, 'd').format('YYYY-MM-DD')}`);
                 // res body should contain categories information
                 res.body.stocks.should.be.an('array');
                 done();
