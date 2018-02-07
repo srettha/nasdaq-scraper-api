@@ -25,6 +25,8 @@ const { getNasdaq, scapeNasdaq } = require('../controllers');
  *         type: number
  *       changeInPercentage:
  *         type: number
+ *       date:
+ *         type: string
 */
 
 /**
