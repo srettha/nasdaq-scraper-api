@@ -1,9 +1,7 @@
 'use strict';
 
-const moment = require('moment');
-
 module.exports = (sequelize, DataTypes) => {
-    const Stock = sequelize.define('stock', {
+    const Stock = sequelize.define('Stock', {
         index: DataTypes.STRING,
         value: DataTypes.FLOAT,
         isPositive: {
@@ -12,28 +10,9 @@ module.exports = (sequelize, DataTypes) => {
         },
         changeInNet: DataTypes.FLOAT,
         changeInPercentage: DataTypes.FLOAT,
-        createdAt: {
-            type: DataTypes.DATE,
-            defaultValue: moment().format(),
-            scopes: ['read']
-        },
-        updatedAt: {
-            type: DataTypes.DATE,
-            defaultValue: moment().format(),
-            scopes: ['read']
-        }
+        date: DataTypes.DATEONLY
     }, {
-        hooks: {
-            afterCreate: (stock) => {
-                return {
-                    index: stock.index,
-                    value: stock.value,
-                    isPositive: stock.isPositive,
-                    changeInNet: stock.changeInNet,
-                    changeInPercentage: stock.changeInPercentage
-                };
-            }
-        }
+        tableName: 'stock'
     });
     return Stock;
 };

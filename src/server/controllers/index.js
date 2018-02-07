@@ -1,21 +1,34 @@
 'use strict';
 
 const moment = require('moment');
+const sequelize = require('sequelize');
 const httpStatus = require('http-status');
-const Model = require('../models');
+const { Stock } = require('../models');
 const { scrapeWebsite } = require('../services');
 
 const getNasdaq = async (req, res, next) => {
     try {
         let filterFrom = req.query.filterFrom || moment().format('YYYY-MM-DD');
         let filterTo = req.query.filterTo || moment(filterFrom).add(1, 'd').format('YYYY-MM-DD');
-        let stocks = await Model.stock.findAll({
+        let stocks = await Stock.findAll({
             order: [['id', 'DESC']],
-            where: { createdAt: { $between: [filterFrom, filterTo] } },
-            attributes: ['index', 'value', 'isPositive', 'changeInNet', 'changeInPercentage']
+            where: {
+                $or: [
+                    {
+                        date: {
+                            $eq: sequelize.literal('(SELECT MAX(date) FROM stock)')
+                        }
+                    },
+                    {
+                        date: {
+                            $between: [filterFrom, filterTo]
+                        }
+                    }
+                ]
+            }
         });
         res.status(httpStatus.OK).json({
-            message: `Successfully retreived Nasdaq stock's price from ${filterFrom} to ${filterTo}`,
+            message: `Successfully retreived Nasdaq stock's price`,
             stocks: stocks
         });
     } catch (err) {
@@ -25,7 +38,7 @@ const getNasdaq = async (req, res, next) => {
 
 const scapeNasdaq = async (req, res, next) => {
     try {
-        let stock = await Model.stock.create(await scrapeWebsite());
+        let stock = await Stock.create(await scrapeWebsite());
         res.status(httpStatus.OK).json({
             message: `Successfully scraped Nasdaq website`,
             stock: {
@@ -33,7 +46,8 @@ const scapeNasdaq = async (req, res, next) => {
                 value: stock.value,
                 isPositive: stock.isPositive,
                 changeInNet: stock.changeInNet,
-                changeInPercentage: stock.changeInPercentage
+                changeInPercentage: stock.changeInPercentage,
+                date: stock.date
             }
         });
     } catch (err) {

@@ -6,17 +6,21 @@ const x = Xray().driver(phantom({ webSecurity: false, weak: false }));
 
 const scrapeWebsite = () => {
     return new Promise((resolve, reject) => {
-        x(process.env.NASDAQ_URL, ['table#indexTable tbody tr#indexTableRow0 td'])((err, obj) => {
+        x(process.env.NASDAQ_URL, {
+            nasdaq: ['table#indexTable tbody tr#indexTableRow0 td'],
+            date: 'table#homepageIndexRow tbody tr td#homepageIndexRowTime@content'
+        })((err, obj) => {
             if (err) {
                 return reject(err);
             }
-            let changes = obj[2].split(' ');
+            let changes = obj.nasdaq[2].split(' ');
             resolve({
-                index: obj[0],
-                value: parseFloat(obj[1]),
+                index: obj.nasdaq[0],
+                value: parseFloat(obj.nasdaq[1]),
                 isPositive: changes[1] === '▲' ? Boolean(1) : Boolean(0),
                 changeInNet: parseFloat(changes[0]),
-                changeInPercentage: parseFloat(changes[2].replace('%', ''))
+                changeInPercentage: parseFloat(changes[2].replace('%', '')),
+                date: obj.date
             });
         });
     });

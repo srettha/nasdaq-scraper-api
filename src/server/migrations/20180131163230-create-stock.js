@@ -24,13 +24,18 @@ module.exports = {
             changeInPercentage: {
                 type: Sequelize.FLOAT
             },
+            date: {
+                type: Sequelize.DATEONLY
+            },
             createdAt: {
                 allowNull: false,
-                type: Sequelize.DATE
+                type: Sequelize.DATE,
+                defaultValue: Sequelize.NOW
             },
             updatedAt: {
                 allowNull: false,
-                type: Sequelize.DATE
+                type: Sequelize.DATE,
+                defaultValue: Sequelize.NOW
             }
         });
     },
